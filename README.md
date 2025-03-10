@@ -79,12 +79,6 @@ Response:
 }
 ```
 
-## Future Improvements
-
-🔹 Add user authentication for secured access  
-🔹 Implement conversation history tracking  
-🔹 Enhance the response generation model for better accuracy  
-
 ## Contributors
 
 - **Aditya Sinha** - *ML Engineer*
