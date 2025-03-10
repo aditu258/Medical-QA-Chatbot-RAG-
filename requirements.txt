@@ -1,0 +1,16 @@
+sentence-transformers
+langchain 
+pypdf
+python-dotenv
+pinecone
+langchain-pinecone
+langchain_community
+langchain_experimental
+transformers 
+torch
+einops 
+accelerate
+bitsandbytes
+huggingface_hub
+google-generativeai
+flask
