@@ -83,7 +83,3 @@ Response:
 
 - **Aditya Sinha** - *ML Engineer*
 
-## License
-
-This project is licensed under the **MIT License**.
-
