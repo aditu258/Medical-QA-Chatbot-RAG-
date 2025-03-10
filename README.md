@@ -87,7 +87,7 @@ Response:
 
 ## Contributors
 
-- **Aditya Sinha** - *Developer*
+- **Aditya Sinha** - *ML Engineer*
 
 ## License
 
