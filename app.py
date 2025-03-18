@@ -15,8 +15,8 @@ load_dotenv()
 app = Flask(__name__)
 
 # Load environment variables
-PINECONE_API_KEY = "pcsk_7RPefD_PyyQvdggkKqbPRpDXR1ihRZQ8R31wPtg5uQHdY2AVC6PwZW88nYbGCVtW7oWXgZ"
-GEMINI_API_KEY = "AIzaSyCMUQqgghshZagWGSJehTc2kZ2sajUkvq8"
+PINECONE_API_KEY = "os.environ.get('PINECONE_API_KEY')"
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 
 os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
 os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
