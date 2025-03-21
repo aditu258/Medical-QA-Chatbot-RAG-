@@ -10,8 +10,6 @@ langchain_community
 langchain_openai
 langchain_experimental
 google-generativeai
-networkx
-matplotlib
 langchain_google_genai
 flask-session
 -e .
