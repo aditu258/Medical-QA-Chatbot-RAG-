@@ -23,6 +23,7 @@ GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 pc = Pinecone(api_key=PINECONE_API_KEY)
 index_name = "test"
 
+# Check if Pinecone is initialized
 # Check if Pinecone index exists
 try:
     indexes = pc.list_indexes()

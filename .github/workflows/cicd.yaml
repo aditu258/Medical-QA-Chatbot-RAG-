@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
 
-
+# This workflow will build a Docker image and push it to Amazon ECR on every push to the main branch.
 jobs:
   Continuous-Integration:
     runs-on: ubuntu-latest
