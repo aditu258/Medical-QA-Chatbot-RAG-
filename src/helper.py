@@ -4,6 +4,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 
 #Extract Data From the PDF File
+#This function loads the PDF file from the given directory and returns the documents.
 def load_pdf_file(data):
     loader= DirectoryLoader(data,
                             glob="*.pdf",
