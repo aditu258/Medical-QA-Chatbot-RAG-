@@ -4,7 +4,7 @@
 # How to run?
 ### STEPS:
 
-Clone the repository
+Clone the repository7
 
 ```bash
 Project repo: https://github.com/
