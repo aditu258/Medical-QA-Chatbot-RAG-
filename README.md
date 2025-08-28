@@ -1,132 +1,90 @@
-# End-to-end-Medical-Chatbot-Generative-AI
+# 🩺 Medical-QA-Chatbot-RAG
 
+An end-to-end Retrieval-Augmented Generation (RAG) medical QA chatbot built with Flask, Pinecone (vector DB), and Gemini-like LLM/embeddings.
 
-# How to run?
-### STEPS:
+✨ What this repo does
+- Ingests clinical/medical documents (PDF), creates embeddings, stores vectors in Pinecone, and serves a small Flask chat UI that retrieves relevant context and generates answers with an LLM.
 
-Clone the repository
+🚀 Quick demo architecture
 
-```bash
-Project repo: https://github.com/
+```mermaid
+flowchart TD
+	U["User"] -->|asks question| WebUI["Web UI\n(templates/chat.html)"]
+	WebUI -->|POST /query| Flask["Flask app\n(app.py)"]
+	Flask --> Preprocess["Preprocess\n(src/helper.py)"]
+	Preprocess --> Retriever["Retriever\n(vector search)\n(src/helper.py)"]
+	Retriever -->|top-k| VectorDB["Vector DB\n(Pinecone)"]
+	Retriever -->|context| Prompt["Prompt & Context\n(src/prompt.py / template.py)"]
+	Prompt --> LLM["LLM / Generator\n(GEMINI_API_KEY)"]
+	LLM --> Answer["Answer + sources"]
+	Answer --> Flask
+	Flask --> WebUI
+	Ingest["Ingest\n(store_index.py / Data/Medical_book.pdf)"] --> VectorDB
 ```
-### STEP 01- Create a conda environment after opening the repository
 
-```bash
-conda create -n medibot python=3.10 -y
+🧭 Quick start (local)
+
+1. Create Python environment (conda or venv)
+
+```powershell
+# conda
+conda create -n medibot python=3.10 -y; conda activate medibot
+
+# or venv
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
 ```
 
-```bash
-conda activate medibot
-```
+2. Install dependencies
 
-
-### STEP 02- install the requirements
-```bash
+```powershell
 pip install -r requirements.txt
 ```
 
+3. Add credentials (DO NOT COMMIT)
 
-### Create a `.env` file in the root directory and add your Pinecone & openai credentials as follows:
+Create a `.env` file in the project root and set your keys:
 
 ```ini
-PINECONE_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-GEMINI_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+PINECONE_API_KEY="your_pinecone_api_key"
+GEMINI_API_KEY="your_llm_or_embedding_key"
+FLASK_SECRET_KEY="a-secret-for-sessions"
 ```
 
+4. Ingest documents to the vector DB
 
-```bash
-# run the following command to store embeddings to pinecone
+```powershell
 python store_index.py
 ```
 
-```bash
-# Finally run the following command
+5. Run the app
+
+```powershell
 python app.py
 ```
 
-Now,
-```bash
-open up localhost:
-```
+Open http://127.0.0.1:5000/ and start asking questions. ✨
 
+📁 Files & mapping
+- `app.py` — Flask server and endpoints
+- `store_index.py` — ingestion: PDF -> chunks -> embeddings -> Pinecone upsert
+- `src/helper.py` — helpers: chunking, embedding calls, retrieval and postprocess
+- `src/prompt.py`, `template.py` — prompt templates and few-shot scaffolding
+- `Data/Medical_book.pdf` — sample document used for ingestion
+- `templates/chat.html`, `static/style.css` — frontend
+- `.env` — environment variables (`PINECONE_API_KEY`, `GEMINI_API_KEY`, `FLASK_SECRET_KEY`)
 
-### Techstack Used:
+🔒 Security & safety
+- Never commit `.env` or secrets to git. Add `.env` to `.gitignore`.
+- Rotate API keys if they were exposed.
+- Sanitize user input and limit the context size passed to the LLM to reduce hallucinations and cost.
 
-- Python
-- LangChain
-- Flask
-- GPT
-- Pinecone
+✨ Nice-to-haves (next steps)
+- Add tests for `store_index.py` and retrieval logic.
+- Add a reranker (cross-encoder) to improve relevance.
+- Implement streaming responses in `app.py` for a better UX.
 
+📝 License & Contributing
+- See `LICENSE` for licensing details. Contributions welcome — open an issue or PR.
 
-# AWS-CICD-Deployment-with-Github-Actions
-
-## 1. Login to AWS console.
-
-## 2. Create IAM user for deployment
-
-	#with specific access
-
-	1. EC2 access : It is virtual machine
-
-	2. ECR: Elastic Container registry to save your docker image in aws
-
-
-	#Description: About the deployment
-
-	1. Build docker image of the source code
-
-	2. Push your docker image to ECR
-
-	3. Launch Your EC2 
-
-	4. Pull Your image from ECR in EC2
-
-	5. Lauch your docker image in EC2
-
-	#Policy:
-
-	1. AmazonEC2ContainerRegistryFullAccess
-
-	2. AmazonEC2FullAccess
-
-	
-## 3. Create ECR repo to store/save docker image
-    - Save the URI: 970547337635.dkr.ecr.ap-south-1.amazonaws.com/medicalchatbot
-
-	
-## 4. Create EC2 machine (Ubuntu) 
-
-## 5. Open EC2 and Install docker in EC2 Machine:
-	
-	
-	#optinal
-
-	sudo apt-get update -y
-
-	sudo apt-get upgrade
-	
-	#required
-
-	curl -fsSL https://get.docker.com -o get-docker.sh
-
-	sudo sh get-docker.sh
-
-	sudo usermod -aG docker ubuntu
-
-	newgrp docker
-	
-# 6. Configure EC2 as self-hosted runner:
-    setting>actions>runner>new self hosted runner> choose os> then run command one by one
-
-
-# 7. Setup github secrets:
-
-   - AWS_ACCESS_KEY_ID
-   - AWS_SECRET_ACCESS_KEY
-   - AWS_DEFAULT_REGION
-   - ECR_REPO
-   - PINECONE_API_KEY
-   - GEMINI_API_KEY
-
-    
+----
+If you want, I can also embed an SVG architecture diagram (add it as `docs/diagram.svg`) or create `docs/architecture.md` with this Mermaid rendering.
