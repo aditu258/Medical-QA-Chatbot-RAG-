@@ -5,22 +5,13 @@ An end-to-end Retrieval-Augmented Generation (RAG) medical QA chatbot built with
 ✨ What this repo does
 - Ingests clinical/medical documents (PDF), creates embeddings, stores vectors in Pinecone, and serves a small Flask chat UI that retrieves relevant context and generates answers with an LLM.
 
-🚀 Quick demo architecture
+�️ Architecture diagram (local)
 
-```mermaid
-flowchart TD
-	U["User"] -->|asks question| WebUI["Web UI\n(templates/chat.html)"]
-	WebUI -->|POST /query| Flask["Flask app\n(app.py)"]
-	Flask --> Preprocess["Preprocess\n(src/helper.py)"]
-	Preprocess --> Retriever["Retriever\n(vector search)\n(src/helper.py)"]
-	Retriever -->|top-k| VectorDB["Vector DB\n(Pinecone)"]
-	Retriever -->|context| Prompt["Prompt & Context\n(src/prompt.py / template.py)"]
-	Prompt --> LLM["LLM / Generator\n(GEMINI_API_KEY)"]
-	LLM --> Answer["Answer + sources"]
-	Answer --> Flask
-	Flask --> WebUI
-	Ingest["Ingest\n(store_index.py / Data/Medical_book.pdf)"] --> VectorDB
-```
+The architecture diagram is available as an SVG on your machine. Open it directly with this link (works locally only):
+
+[Open architecture diagram](file:///C:/Users/Lenovo/Downloads/Untitled%20diagram%20_%20Mermaid%20Chart-2025-08-28-170844.svg)
+
+If you'd like the SVG embedded in the repo for others to view, copy it into `docs/diagram.svg` and I will commit and reference it here.
 
 🧭 Quick start (local)
 
