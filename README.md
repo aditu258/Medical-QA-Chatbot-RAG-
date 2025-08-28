@@ -5,13 +5,21 @@ An end-to-end Retrieval-Augmented Generation (RAG) medical QA chatbot built with
 ✨ What this repo does
 - Ingests clinical/medical documents (PDF), creates embeddings, stores vectors in Pinecone, and serves a small Flask chat UI that retrieves relevant context and generates answers with an LLM.
 
-�️ Architecture diagram (local)
+🗺️ Architecture diagram
 
-The architecture diagram is available as an SVG on your machine. Open it directly with this link (works locally only):
+- Click to open (local file — opens on your machine):
 
-[Open architecture diagram](file:///C:/Users/Lenovo/Downloads/Untitled%20diagram%20_%20Mermaid%20Chart-2025-08-28-170844.svg)
+[Open architecture diagram (local)](file:///C:/Users/Lenovo/Downloads/Untitled%20diagram%20_%20Mermaid%20Chart-2025-08-28-170844.svg)
 
-If you'd like the SVG embedded in the repo for others to view, copy it into `docs/diagram.svg` and I will commit and reference it here.
+- If you want the diagram available to others from the repo, copy the SVG into `docs/diagram.svg` (example PowerShell command):
+
+```powershell
+mkdir -Force ".\docs"; Copy-Item -Path "C:\Users\Lenovo\Downloads\Untitled diagram _ Mermaid Chart-2025-08-28-170844.svg" -Destination ".\docs\diagram.svg" -Force
+```
+
+After copying, this relative link will work on GitHub and locally:
+
+[Open architecture diagram (repo)](docs/diagram.svg)
 
 🧭 Quick start (local)
 
