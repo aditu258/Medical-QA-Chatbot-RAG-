@@ -3,7 +3,10 @@ from src.helper import download_hugging_face_embeddings
 from langchain_pinecone import PineconeVectorStore
 from dotenv import load_dotenv
 import os
-import google.generativeai as genai
+try:
+    import google.generativeai as genai
+except Exception:
+    genai = None
 from pinecone import Pinecone
 from google.api_core.exceptions import ResourceExhausted
 
@@ -47,8 +50,33 @@ docsearch = PineconeVectorStore.from_existing_index(
 retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 
 # Configure Gemini
-genai.configure(api_key=GEMINI_API_KEY)
-gemini_model = genai.GenerativeModel("models/gemini-1.5-pro-latest")
+def get_gemini_model():
+    """Lazily initialize and return the Gemini generative model.
+
+    Returns None if the library isn't available or initialization fails.
+    Caches the model in a module-level variable to avoid repeated initialization.
+    """
+    global gemini_model
+    if 'gemini_model' in globals() and gemini_model is not None:
+        return gemini_model
+
+    if genai is None:
+        print("google.generativeai is not available in this environment.")
+        return None
+
+    if not GEMINI_API_KEY:
+        print("GEMINI_API_KEY is not set. Gemini model cannot be initialized.")
+        return None
+
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+        gemini_model = genai.GenerativeModel(model_name="gemini-2.5-flash")
+        return gemini_model
+    except Exception as e:
+        print(f"Failed to initialize Gemini model: {e}")
+        gemini_model = None
+        return None
+
 
 # Initialize custom conversation memory using session
 def get_conversation_memory():
@@ -146,6 +174,10 @@ def chat():
         )
 
         # Generate response using Gemini
+        gemini_model = get_gemini_model()
+        if not gemini_model:
+            return "Gemini model is not available. Please check the configuration."
+
         try:
             response = gemini_model.generate_content(prompt_text)
             generated_answer = response.text.strip() if response.text else "I'm sorry, I can't answer that."
